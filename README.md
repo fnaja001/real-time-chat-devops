@@ -31,7 +31,7 @@ text
 - **Redis** – In‑memory pub/sub and optional session store
 - **MongoDB** – Persistent message and user storage
 
----
+----
 
 ## 🚀 Deploy on Minikube
 
