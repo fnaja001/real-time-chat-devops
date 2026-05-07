@@ -1,0 +1,16 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: websocket
+  namespace: monitoring
+spec:
+  selector:
+    matchLabels:
+      app: websocket
+  endpoints:
+  - port: metrics
+    path: /metrics
+    interval: 15s
+  - name: metrics
+  port: 3000
+  targetPort: 3000
