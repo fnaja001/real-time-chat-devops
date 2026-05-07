@@ -1,308 +1,132 @@
-\# 🗨️ Real‑time Chat – Advanced DevOps Project
-
-
-
-A fully containerised, horizontally scalable chat application built with \*\*Socket.io\*\*, \*\*Redis\*\*, \*\*MongoDB\*\*, and \*\*Node.js\*\*, deployed on \*\*Kubernetes\*\* (Minikube). Demonstrates modern DevOps practices: real‑time communication, message persistence, Redis pub/sub for cross‑pod messaging, and production‑grade Kubernetes manifests.
-
-
-
-!\[Chat UI Demo](screenshot.png)
-
-
-
-\---
-
-
-
-\## 🏗 Architecture
-
-
-
-```mermaid
-
-graph TD
-
-&#x20;   User1\[User 1] -->|HTTP/WebSocket| Nginx\[Ingress / Port-Forward]
-
-&#x20;   User2\[User 2] -->|HTTP/WebSocket| Nginx
-
-&#x20;   Nginx --> Frontend\[Frontend Service - Nginx]
-
-&#x20;   Nginx --> WS\[WebSocket Service]
-
-&#x20;   WS --> WS1\[WebSocket Pod 1]
-
-&#x20;   WS --> WS2\[WebSocket Pod 2]
-
-&#x20;   WS1 --> Redis\[Redis Pub/Sub]
-
-&#x20;   WS2 --> Redis
-
-&#x20;   Redis -->|broadcast| WS1
-
-&#x20;   Redis -->|broadcast| WS2
-
-&#x20;   WS1 --> API\[REST API]
-
-&#x20;   API --> MongoDB\[(MongoDB)]
-
-&#x20;   Frontend -->|serves static UI| User1
-
-&#x20;   Frontend -->|serves static UI| User2
-
-
-
-
-
-* Frontend – Static HTML/CSS/JS (served by Nginx)
-
-
-
-* WebSocket Server – Socket.io, scales horizontally via Redis pub/sub
-
-
-
-* REST API – Express + Mongoose (user auth, message history)
-
-
-
-* Redis – In‑memory pub/sub and optional session store
-
-
-
-* MongoDB – Persistent message and user storage
-
-
-
-🚀 Deploy on Minikube
-
-Prerequisites
-
-Minikube (Docker driver)
-
-
-
-kubectl
-
-
-
-Docker
-
-
-
-(Optional) Helm for packaging
-
-
-
-1\. Start Minikube
-
-bash
-
-minikube start --driver=docker
-
-2\. Clone the repository
-
-bash
-
-git clone https://github.com/fnaja001/real-time-chat-devops.git
-
-cd real-time-chat-devops
-
-3\. Deploy all components
-
-bash
-
-kubectl apply -f k8s/mongodb-deployment.yaml
-
-kubectl apply -f k8s/redis-deployment.yaml
-
-kubectl apply -f k8s/api-deployment.yaml
-
-kubectl apply -f k8s/websocket-deployment.yaml
-
-kubectl apply -f k8s/frontend-deployment.yaml
-
-Wait for all pods to be ready:
-
-
-
-bash
-
-kubectl get pods -w
-
-4\. Access the chat
-
-In two separate terminals, run port‑forwards:
-
-
-
-bash
-
-\# Terminal 1 – WebSocket
-
-kubectl port-forward service/websocket-service 3000:3000
-
-
-
-\# Terminal 2 – Frontend
-
-minikube service frontend-service --url
-
-Open the URL from Terminal 2 in two browser tabs. Type a message in one tab – it appears instantly in the other!
-
-
-
-🧪 Load Testing (k6)
-
-Simulate 50 concurrent users:
-
-
-
-bash
-
-kubectl apply -f load-test/k6-job.yaml
-
-kubectl logs job/k6-load-test
-
-See HPA scale WebSocket pods based on CPU or custom metrics.
-
-
-
-📡 API Endpoints
-
-Method	Endpoint	Description
-
-POST	/api/register	Create a new user
-
-POST	/api/login	Get JWT token
-
-POST	/api/rooms	Create a new chat room
-
-GET	/api/rooms	List user rooms
-
-GET	/api/messages/:room	Get last 100 messages
-
-POST	/api/messages	Save a message (called by WS)
-
-📊 Monitoring (Optional)
-
-Install Prometheus stack:
-
-
-
-bash
-
-helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-
-helm install monitoring prometheus-community/kube-prometheus-stack --namespace monitoring --create-namespace
-
-Add a ServiceMonitor for the WebSocket server (see monitoring/websocket-servicemonitor.yaml).
-
-Grafana dashboards will show chat\_connections\_active and chat\_messages\_total.
-
-
-
-🧠 Technologies \& Tools
-
-Containerisation: Docker
-
-
-
-Orchestration: Kubernetes (Minikube)
-
-
-
-Real‑time: Socket.io + Redis pub/sub
-
-
-
-Database: MongoDB (persistent)
-
-
-
-Load Testing: k6
-
-
-
-Monitoring: Prometheus + Grafana
-
-
-
-Version Control: Git + GitHub Actions (to be added)
-
-
-
-🎯 What This Project Demonstrates
-
-✅ Multi‑service microservice architecture on K8s
-
-
-
-✅ Horizontal scaling of WebSocket servers via Redis pub/sub
-
-
-
-✅ Stateful workload (MongoDB with PersistentVolumeClaim)
-
-
-
-✅ Clean separation of static frontend, API, and WebSocket servers
-
-
-
-✅ Production‑grade readiness (liveness/readiness probes, resource limits)
-
-
-
-✅ Load testing and observability (metrics, logs – optional)
-
-
-
-📄 License
-
-MIT
-
-
-
-👤 Author
-
-fnaja001 – GitHub
-
-
+# Real‑time Chat – Advanced DevOps Project
+
+A fully containerised, horizontally scalable chat application built with **Socket.io**, **Redis**,
+**MongoDB**, and **Node.js**, deployed on **Kubernetes** (Minikube). Demonstrates modern
+DevOps practices: real‑time communication, message persistence, Redis pub/sub for cross‑pod
+messaging, and production‑grade Kubernetes manifests.
+
+![Chat UI Demo](screenshot.png)
+
+---
+
+## 🏗 Architecture
+User 1 ──► (HTTP/WebSocket) ──► Ingress / Port-Forward
+User 2 ──► (HTTP/WebSocket) ──► Ingress / Port-Forward
+│
+├──► Frontend Service (Nginx) ──► serves static UI
+│
+└──► WebSocket Service
+│
+├──► WebSocket Pod 1 ──► Redis Pub/Sub ──► broadcast
+│
+└──► WebSocket Pod 2 ──► Redis Pub/Sub ──► broadcast
+│
+└──► REST API ──► MongoDB (messages, users)
 
 text
 
+- **Frontend** – Static HTML/CSS/JS (served by Nginx)
+- **WebSocket Server** – Socket.io, scales horizontally via Redis pub/sub
+- **REST API** – Express + Mongoose (user auth, message history)
+- **Redis** – In‑memory pub/sub and optional session store
+- **MongoDB** – Persistent message and user storage
 
+---
 
-\---
+## 🚀 Deploy on Minikube
 
+### Prerequisites
 
+- [Minikube](https://minikube.sigs.k8s.io/docs/start/) (Docker driver)
+- [kubectl](https://kubernetes.io/docs/tasks/tools/)
+- [Docker](https://www.docker.com/products/docker-desktop/)
+- (Optional) [Helm](https://helm.sh/) for packaging
 
-\## 📸 Add a screenshot
+### 1. Start Minikube
 
+```bash
+minikube start --driver=docker
+2. Clone the repository
+bash
+git clone https://github.com/fnaja001/real-time-chat-devops.git
+cd real-time-chat-devops
+3. Deploy all components
+bash
+kubectl apply -f k8s/mongodb-deployment.yaml
+kubectl apply -f k8s/redis-deployment.yaml
+kubectl apply -f k8s/api-deployment.yaml
+kubectl apply -f k8s/websocket-deployment.yaml
+kubectl apply -f k8s/frontend-deployment.yaml
+Wait for all pods to be ready:
 
+bash
+kubectl get pods -w
+4. Access the chat
+In two separate terminals, run:
 
-Take a screenshot of your chat working in two tabs and save it as `screenshot.png` in the same folder. Then commit and push.
+bash
+# Terminal 1 – WebSocket port‑forward
+kubectl port-forward service/websocket-service 3000:3000
 
+# Terminal 2 – Frontend tunnel
+minikube service frontend-service --url
+Open the URL from Terminal 2 in two browser tabs. Type a message in one tab – it appears instantly in the other!
 
+🧪 Load Testing with k6
+Simulate 50 concurrent users:
 
-\---
+bash
+kubectl apply -f load-test/k6-job.yaml
+kubectl logs job/k6-load-test
+(Optional) Enable HPA to autoscale WebSocket pods based on CPU or custom metrics.
 
+📡 API Endpoints
+Method	Endpoint	Description
+POST	/api/register	Create a new user
+POST	/api/login	Get JWT token
+POST	/api/rooms	Create a new chat room
+GET	/api/rooms	List user rooms
+GET	/api/messages/:room	Get last 100 messages
+POST	/api/messages	Save a message (called by WS)
+📊 Monitoring (Optional)
+Install Prometheus stack:
 
+bash
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm install monitoring prometheus-community/kube-prometheus-stack --namespace monitoring --create-namespace
+Add a ServiceMonitor for the WebSocket server (see monitoring/websocket-servicemonitor.yaml).
+Grafana dashboards can show chat_connections_active and chat_messages_total.
 
-\## 🔁 Commit and push to GitHub
+🧠 Technologies & Tools
+Containerisation: Docker
 
+Orchestration: Kubernetes (Minikube)
 
+Real‑time: Socket.io + Redis pub/sub
 
-```powershell
+Database: MongoDB (persistent)
 
-cd C:\\chat-project
+Load Testing: k6
 
-git add README.md screenshot.png
+Monitoring: Prometheus + Grafana
 
-git commit -m "Add professional README and screenshot"
+Version Control: Git + GitHub Actions (to be added)
 
-git push origin master   # or main if you renamed
+🎯 What This Project Demonstrates
+✅ Multi‑service microservice architecture on K8s
 
+✅ Horizontal scaling of WebSocket servers via Redis pub/sub
 
+✅ Stateful workload (MongoDB with PersistentVolumeClaim)
 
+✅ Clean separation of static frontend, API, and WebSocket servers
+
+✅ Production‑grade readiness (liveness/readiness probes, resource limits)
+
+✅ Load testing and observability (metrics, logs – optional)
+
+📄 License
+MIT
+
+👤 Author
+fnaja001 – GitHub
