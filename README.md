@@ -1,11 +1,14 @@
-# Real‑time Chat – Advanced DevOps Project
+![Kubernetes](https://img.shields.io/badge/kubernetes-326CE5?style=flat&logo=kubernetes&logoColor=white)
+![Docker](https://img.shields.io/badge/docker-2496ED?style=flat&logo=docker&logoColor=white)
+![Node.js](https://img.shields.io/badge/node.js-339933?style=flat&logo=nodedotjs&logoColor=white)
+![Redis](https://img.shields.io/badge/redis-DC382D?style=flat&logo=redis&logoColor=white)
+![MongoDB](https://img.shields.io/badge/mongodb-47A248?style=flat&logo=mongodb&logoColor=white)
 
-A fully containerised, horizontally scalable chat application built with **Socket.io**, **Redis**,
-**MongoDB**, and **Node.js**, deployed on **Kubernetes** (Minikube). Demonstrates modern
-DevOps practices: real‑time communication, message persistence, Redis pub/sub for cross‑pod
-messaging, and production‑grade Kubernetes manifests.
+README "About" intro
 
-![Chat UI Demo](screenshot.png)
+A production-grade, fully containerized real-time chat application demonstrating modern DevOps practices. Built with Node.js, Socket.io, Redis, and MongoDB, deployed on Kubernetes with horizontal scaling, observability via Prometheus and Grafana, and load testing via k6. Designed to simulate real-world multi-service microservice deployments.
+
+![Chat UI Demo](screenshoot.png)
 
 ---
 
@@ -23,7 +26,6 @@ User 2 ──► (HTTP/WebSocket) ──► Ingress / Port-Forward
 │
 └──► REST API ──► MongoDB (messages, users)
 
-text
 
 - **Frontend** – Static HTML/CSS/JS (served by Nginx)
 - **WebSocket Server** – Socket.io, scales horizontally via Redis pub/sub
@@ -110,7 +112,7 @@ Load Testing: k6
 
 Monitoring: Prometheus + Grafana
 
-Version Control: Git + GitHub Actions (to be added)
+Version Control: Git + GitHub Actions 
 
 🎯 What This Project Demonstrates
 ✅ Multi‑service microservice architecture on K8s
