@@ -1,9 +1,6 @@
-# Real‑time Chat – Advanced DevOps Project
+README "About" intro
 
-A fully containerised, horizontally scalable chat application built with **Socket.io**, **Redis**,
-**MongoDB**, and **Node.js**, deployed on **Kubernetes** (Minikube). Demonstrates modern
-DevOps practices: real‑time communication, message persistence, Redis pub/sub for cross‑pod
-messaging, and production‑grade Kubernetes manifests.
+A production-grade, fully containerized real-time chat application demonstrating modern DevOps practices. Built with Node.js, Socket.io, Redis, and MongoDB, deployed on Kubernetes with horizontal scaling, observability via Prometheus and Grafana, and load testing via k6. Designed to simulate real-world multi-service microservice deployments.
 
 ![Chat UI Demo](screenshot.png)
 
