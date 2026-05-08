@@ -1,8 +1,14 @@
+![Kubernetes](https://img.shields.io/badge/kubernetes-326CE5?style=flat&logo=kubernetes&logoColor=white)
+![Docker](https://img.shields.io/badge/docker-2496ED?style=flat&logo=docker&logoColor=white)
+![Node.js](https://img.shields.io/badge/node.js-339933?style=flat&logo=nodedotjs&logoColor=white)
+![Redis](https://img.shields.io/badge/redis-DC382D?style=flat&logo=redis&logoColor=white)
+![MongoDB](https://img.shields.io/badge/mongodb-47A248?style=flat&logo=mongodb&logoColor=white)
+
 README "About" intro
 
 A production-grade, fully containerized real-time chat application demonstrating modern DevOps practices. Built with Node.js, Socket.io, Redis, and MongoDB, deployed on Kubernetes with horizontal scaling, observability via Prometheus and Grafana, and load testing via k6. Designed to simulate real-world multi-service microservice deployments.
 
-![Chat UI Demo](screenshot.png)
+![Chat UI Demo](screenshoot.png)
 
 ---
 
