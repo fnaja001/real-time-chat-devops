@@ -3,6 +3,7 @@
 ![Node.js](https://img.shields.io/badge/node.js-339933?style=flat&logo=nodedotjs&logoColor=white)
 ![Redis](https://img.shields.io/badge/redis-DC382D?style=flat&logo=redis&logoColor=white)
 ![MongoDB](https://img.shields.io/badge/mongodb-47A248?style=flat&logo=mongodb&logoColor=white)
+[![CI](https://github.com/fnaja001/real-time-chat-devops/actions/workflows/deploy.yml/badge.svg)](https://github.com/fnaja001/real-time-chat-devops/actions/workflows/deploy.yml)
 
 README "About" intro
 
