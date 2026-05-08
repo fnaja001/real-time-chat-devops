@@ -20,7 +20,6 @@ User 2 ──► (HTTP/WebSocket) ──► Ingress / Port-Forward
 │
 └──► REST API ──► MongoDB (messages, users)
 
-text
 
 - **Frontend** – Static HTML/CSS/JS (served by Nginx)
 - **WebSocket Server** – Socket.io, scales horizontally via Redis pub/sub
@@ -107,7 +106,7 @@ Load Testing: k6
 
 Monitoring: Prometheus + Grafana
 
-Version Control: Git + GitHub Actions (to be added)
+Version Control: Git + GitHub Actions 
 
 🎯 What This Project Demonstrates
 ✅ Multi‑service microservice architecture on K8s
